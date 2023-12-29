@@ -1,0 +1,54 @@
+//THIS JAVASCRIPT FILE SHOULD BE HOSTED ON A PUBLIC SERVER. IN THIS EXAMPLE APP THE HOST IS THE FIREBASE'S "CLOUD FUNCTIONS" SERVICE
+//Since you will use FCM, you must have a Firebase project anyway, so registering the service of Cloud Functions is just one extra step
+//YOU CAN EDIT AND UPLOAD SUCH A FUNCTION USING VISUAL STUDIO AND UPLOAD IT USING NODE.JS COMMAND PROMPT
+//There are excellent tutorials, just google on 'node.js' + 'cloud functions' + 'Firebase Admin SDK'
+//INTEGRATING FIREBASE ADMIN SDK TO THIS FUNCTION WILL BIND THIS FUNCTION WITH YOUR APP'S FIREBASE PROJECT, AND WILL KEEP THE DELIVERY SIMPLE
+
+const {onRequest} = require("firebase-functions/v2/https");
+const logger = require("firebase-functions/logger");
+// The Firebase Admin SDK to access Firestore.
+const admin = require('firebase-admin');
+const {setGlobalOptions} = require("firebase-functions/v2");
+
+
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+});
+setGlobalOptions({ region: "europe-central2" });
+
+
+
+ exports.messageSendingFunction = onRequest(async (req, res) => {
+
+  const yourMessage = req.body.data.text;
+  const tokenOfTheRecepient = req.body.data.token;
+   logger.info("Hello logs!"+yourMessage, {structuredData: true});
+
+
+
+const message = {
+  data: {
+    body: yourmessage,
+    title: 'Some title'
+  },
+  token: tokenOfTheRecepient
+};
+
+// Send a message to the device corresponding to the provided
+// registration token.
+await admin.messaging().send(message)
+  .then((response) => {
+    // Response is a message ID string.
+    logger.info('Successfully sent message:', response);
+    res.send({
+      status: "success",
+      data: "OK"
+    });
+    return (response);
+  })
+  .catch((error) => {
+    console.log('Error sending message:', error);
+  });
+
+
+ });
