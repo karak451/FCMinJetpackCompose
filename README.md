@@ -7,7 +7,7 @@ The project consists of 3 main branch:
   <li>Hosting a message sending function - this message sending function supposed to be placed on a public server and the function must be able to communicate with FCM (find in the <a href="app/src/main/java/com/foldrajzappok/fcminjetpackcompose/NOT_HERE">NOT HERE</a> folder)</li>
 </ul>
 
-There are great tutorials explaining how to send targeted FCM messages to users, but it is hard to find a current explanation of how users can notify each other like in Messenger or WhatsApp.
+There are great tutorials explaining how to send targeted FCM messages to users, but it is hard to find a current explanation of how users can notify each other like in Messenger or WhatsApp. The key concept is that FCM service finds users using a special token, and most importantly your app can not call FCM directly anymore (security reasons). There must be a hosted function which is integrated with Firebase Admin SDK. You can not integrate Firebase Admin SDK to your app directly, therefore the need of the hosted function.
 
 At the point where you try to integrate FCM to your app you probably already connected your app to Firebase, so there is no need to explain this here.
 
